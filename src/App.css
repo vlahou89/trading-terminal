@@ -48,3 +48,25 @@
 }
 .ticker-cell__change--pos { color: #2ecc71; }
 .ticker-cell__change--neg { color: #ff5555; }
+
+.candle-chart {
+  margin-top: 2rem;
+  background: #151a23;
+  border: 1px solid #232a36;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.candle-chart__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.candle-chart__symbol { font-weight: 600; font-size: 1.1rem; }
+.candle-chart__canvas { width: 100%; }
+.candle-chart__error {
+  color: #ff5555;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
