@@ -1,5 +1,8 @@
 # Live Trading Terminal
 
+<img width="1145" height="927" alt="image" src="https://github.com/user-attachments/assets/f3fa58e2-5874-4127-ae28-7f8430895f46" />
+<img width="1107" height="634" alt="image" src="https://github.com/user-attachments/assets/0f02c7a7-6b96-4508-95a3-2031ef3c1dc4" />
+
 A real-time cryptocurrency trading interface built to demonstrate the specific engineering challenges of high-frequency financial UIs: WebSocket lifecycle management, render performance under streaming data, and clean state architecture across interdependent features.
 
 **Live data, not mocked.** Every price, candle, and order book level streams from Binance's public REST and WebSocket APIs in real time.
