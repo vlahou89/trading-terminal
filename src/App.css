@@ -70,3 +70,53 @@
   margin-bottom: 0.5rem;
 }
 
+
+.app__chart-and-book {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+  align-items: start;
+}
+.app__chart-and-book .candle-chart { margin-top: 0; }
+ 
+.depth-ladder {
+  background: #151a23;
+  border: 1px solid #232a36;
+  border-radius: 8px;
+  padding: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+.depth-ladder__spread {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #8a93a3;
+  padding: 0.4rem 0;
+  border-top: 1px solid #232a36;
+  border-bottom: 1px solid #232a36;
+  margin: 0.25rem 0;
+}
+ 
+.ladder-row {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.85rem;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+.ladder-row--flash { background-color: rgba(255, 255, 255, 0.08); }
+.ladder-row__depth-bar {
+  position: absolute;
+  top: 0; bottom: 0; right: 0;
+  z-index: 0;
+  transition: width 0.15s ease;
+}
+.ladder-row__depth-bar--bid { background: rgba(46, 204, 113, 0.15); }
+.ladder-row__depth-bar--ask { background: rgba(255, 85, 85, 0.15); }
+.ladder-row__quantity, .ladder-row__price { position: relative; z-index: 1; }
+.ladder-row__quantity { color: #8a93a3; }
+.ladder-row__price--bid { color: #2ecc71; }
+.ladder-row__price--ask { color: #ff5555; }
+
