@@ -1,99 +1,252 @@
+/* ---- TradingView-style dark theme ----
+   Palette matches TradingView's actual chart chrome: near-black background
+   (#131722), not pure black, with a slightly lighter panel surface
+   (#1e222d) and hairline borders (#2a2e39). Buy/sell uses TradingView's
+   own blue/red convention (#2962ff / #f23645) — deliberately DIFFERENT
+   from the green/red used for candle direction, since "is this candle up
+   or down" and "did I buy or sell" are two separate facts that would be
+   confusing to collapse into the same two colors. */
+ 
+:root {
+  --bg-app: #131722;
+  --bg-panel: #1c2030;
+  --bg-panel-raised: #1e222d;
+  --border: #2a2e39;
+  --text-primary: #d1d4dc;
+  --text-secondary: #787b86;
+  --text-muted: #5d6066;
+  --up: #26a69a;
+  --down: #ef5350;
+  --buy: #2962ff;
+  --sell: #f23645;
+}
+ 
+* {
+  box-sizing: border-box;
+}
+ 
 .app {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #0b0e14;
-  color: #e6e6e6;
+  background: var(--bg-app);
+  color: var(--text-primary);
   min-height: 100vh;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
 }
  
 .connection-badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
 }
 .connection-badge--connecting,
-.connection-badge--reconnecting { background: #4a3b00; color: #ffcc00; }
-.connection-badge--open { background: #003d23; color: #2ecc71; }
-.connection-badge--closed { background: #4a0000; color: #ff5555; }
+.connection-badge--reconnecting {
+  background: rgba(255, 204, 0, 0.12);
+  color: #ffcc00;
+}
+.connection-badge--open {
+  background: rgba(38, 166, 154, 0.12);
+  color: var(--up);
+}
+.connection-badge--closed {
+  background: rgba(242, 54, 69, 0.12);
+  color: var(--sell);
+}
  
+/* ---- Top brand/ticker strip ---- */
+ 
+.ticker-strip {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+}
+.ticker-strip__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.ticker-strip__logo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
 .ticker-strip__cells {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
  
 .ticker-cell {
-  background: #151a23;
-  border: 1px solid #232a36;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  min-width: 160px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.4rem 0.9rem;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  transition: background-color 0.3s ease;
+  gap: 0.15rem;
+  align-items: flex-start;
+  transition: background-color 0.3s ease, border-color 0.15s ease;
+  cursor: pointer;
+  font-family: inherit;
 }
- 
-.ticker-cell--up { background-color: #0d2818; }
-.ticker-cell--down { background-color: #2a0d12; }
- 
-.ticker-cell__symbol { font-size: 0.8rem; color: #8a93a3; }
+.ticker-cell:hover {
+  background: var(--bg-panel-raised);
+}
+.ticker-cell.is-active {
+  background: var(--bg-panel-raised);
+  border-color: var(--buy);
+}
+.ticker-cell--up {
+  background-color: rgba(38, 166, 154, 0.15);
+}
+.ticker-cell--down {
+  background-color: rgba(239, 83, 80, 0.15);
+}
+.ticker-cell__symbol {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
 .ticker-cell__price {
-  font-size: 1.4rem;
+  font-size: 1.05rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
 }
-.ticker-cell__change--pos { color: #2ecc71; }
-.ticker-cell__change--neg { color: #ff5555; }
-
+.ticker-cell__change--pos {
+  color: var(--up);
+}
+.ticker-cell__change--neg {
+  color: var(--down);
+}
+ 
+/* ---- Workspace grid ---- */
+ 
+.app__workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+ 
+.app__chart-and-book {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 1px;
+  background: var(--border);
+}
+ 
+.app__order-and-blotter {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+ 
+/* ---- Candle chart + toolbar ---- */
+ 
 .candle-chart {
-  margin-top: 2rem;
-  background: #151a23;
-  border: 1px solid #232a36;
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--bg-app);
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
 }
-.candle-chart__header {
+.candle-chart__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+.candle-chart__symbol-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.candle-chart__symbol-select {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.candle-chart__intervals {
+  display: flex;
+  gap: 0.25rem;
+}
+.candle-chart__interval-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.candle-chart__interval-btn:hover {
+  background: var(--bg-panel-raised);
+  color: var(--text-primary);
+}
+.candle-chart__interval-btn.is-active {
+  background: var(--buy);
+  color: #ffffff;
+}
+.candle-chart__canvas {
+  flex: 1;
+  min-height: 0;
+}
+.candle-chart__error {
+  color: var(--sell);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+}
+ 
+/* ---- Order book ladder ---- */
+ 
+.depth-ladder {
+  background: var(--bg-app);
+  padding: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  flex-direction: column;
+}
+.depth-ladder__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
-}
-.candle-chart__symbol { font-weight: 600; font-size: 1.1rem; }
-.candle-chart__canvas { width: 100%; }
-.candle-chart__error {
-  color: #ff5555;
-  font-size: 0.85rem;
   margin-bottom: 0.5rem;
 }
-
-
-.app__chart-and-book {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1rem;
-  margin-top: 2rem;
-  align-items: start;
+.depth-ladder__symbol {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
 }
-.app__chart-and-book .candle-chart { margin-top: 0; }
- 
-.depth-ladder {
-  background: #151a23;
-  border: 1px solid #232a36;
-  border-radius: 8px;
-  padding: 1rem;
-  font-variant-numeric: tabular-nums;
+.depth-ladder__columns {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  padding: 0 0.25rem 0.25rem;
 }
 .depth-ladder__spread {
   text-align: center;
-  font-size: 0.8rem;
-  color: #8a93a3;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
   padding: 0.4rem 0;
-  border-top: 1px solid #232a36;
-  border-bottom: 1px solid #232a36;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   margin: 0.25rem 0;
 }
  
@@ -102,21 +255,249 @@
   display: flex;
   justify-content: space-between;
   padding: 0.15rem 0.4rem;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   overflow: hidden;
   transition: background-color 0.2s ease;
 }
-.ladder-row--flash { background-color: rgba(255, 255, 255, 0.08); }
+.ladder-row--flash {
+  background-color: rgba(255, 255, 255, 0.08);
+}
 .ladder-row__depth-bar {
   position: absolute;
-  top: 0; bottom: 0; right: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
   z-index: 0;
   transition: width 0.15s ease;
 }
-.ladder-row__depth-bar--bid { background: rgba(46, 204, 113, 0.15); }
-.ladder-row__depth-bar--ask { background: rgba(255, 85, 85, 0.15); }
-.ladder-row__quantity, .ladder-row__price { position: relative; z-index: 1; }
-.ladder-row__quantity { color: #8a93a3; }
-.ladder-row__price--bid { color: #2ecc71; }
-.ladder-row__price--ask { color: #ff5555; }
+.ladder-row__depth-bar--bid {
+  background: rgba(38, 166, 154, 0.15);
+}
+.ladder-row__depth-bar--ask {
+  background: rgba(239, 83, 80, 0.15);
+}
+.ladder-row__quantity,
+.ladder-row__price {
+  position: relative;
+  z-index: 1;
+}
+.ladder-row__quantity {
+  color: var(--text-secondary);
+}
+.ladder-row__price--bid {
+  color: var(--up);
+}
+.ladder-row__price--ask {
+  color: var(--down);
+}
+ 
+/* ---- Order entry form ---- */
+ 
+.order-form {
+  background: var(--bg-app);
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.order-form__side-toggle {
+  display: flex;
+  gap: 0.4rem;
+}
+.order-form__side-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-panel-raised);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+}
+/* Buy/sell uses blue/red — TradingView's own action-color convention,
+   distinct from the green/red used for candle direction. */
+.order-form__side-btn--buy.is-active {
+  background: rgba(41, 98, 255, 0.15);
+  border-color: var(--buy);
+  color: var(--buy);
+}
+.order-form__side-btn--sell.is-active {
+  background: rgba(242, 54, 69, 0.15);
+  border-color: var(--sell);
+  color: var(--sell);
+}
+.order-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.order-form__field input,
+.order-form__field select {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.45rem;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+.order-form__current-price {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.order-form__submit {
+  padding: 0.6rem;
+  border-radius: 4px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 0.85rem;
+}
+.order-form__submit--buy {
+  background: var(--buy);
+  color: #ffffff;
+}
+.order-form__submit--sell {
+  background: var(--sell);
+  color: #ffffff;
+}
+.order-form__submit:disabled {
+  background: var(--bg-panel-raised);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+ 
+/* ---- Positions / blotter table ---- */
+ 
+.positions-table {
+  background: var(--bg-app);
+  padding: 0.85rem;
+  border-left: 1px solid var(--border);
+}
+.positions-table__heading {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.positions-table__empty {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.positions-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  font-variant-numeric: tabular-nums;
+}
+.positions-table th {
+  text-align: left;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.positions-table td {
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--bg-panel-raised);
+}
+/* Side label uses the same buy/sell blue/red as the order entry form,
+   so a position's side reads consistently with how it was placed. */
+.positions-table__side--buy {
+  color: var(--buy);
+}
+.positions-table__side--sell {
+  color: var(--sell);
+}
+.positions-table__pnl--pos {
+  color: var(--up);
+}
+.positions-table__pnl--neg {
+  color: var(--down);
+}
+.positions-table__pending {
+  margin-top: 1rem;
+}
+.positions-table__pending ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.83rem;
+}
+.positions-table__pending li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--bg-panel-raised);
+}
+.positions-table__pending button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-family: inherit;
+}
+ 
+/* ---- Diagnostics panel ---- */
+ 
+.latency-monitor {
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+}
+.latency-monitor__heading {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.latency-monitor__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.latency-monitor__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.latency-monitor__label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.latency-monitor__value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+}
+.latency-monitor__value.is-good {
+  color: var(--up);
+}
+.latency-monitor__value.is-warn {
+  color: #ffcc00;
+}
+.latency-monitor__value.is-bad {
+  color: var(--down);
+}
+ 
+@media (max-width: 900px) {
+  .app__chart-and-book,
+  .app__order-and-blotter {
+    grid-template-columns: 1fr;
+  }
+}
 
